@@ -1,5 +1,7 @@
+import { Layout } from '../../layout';
+
 const CategoriesPage = () => {
-    return <>Categories</>;
+    return <Layout>Categories</Layout>;
 };
 
 export { CategoriesPage };

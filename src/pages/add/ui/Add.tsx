@@ -1,5 +1,7 @@
+import { Layout } from '../../layout';
+
 const AddPage = () => {
-    return <>Add</>;
+    return <Layout>Add</Layout>;
 };
 
 export { AddPage };

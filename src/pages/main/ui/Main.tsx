@@ -1,5 +1,7 @@
+import { Layout } from '../../layout';
+
 const MainPage = () => {
-    return <>Main</>;
+    return <Layout>Main page</Layout>;
 };
 
 export { MainPage };
