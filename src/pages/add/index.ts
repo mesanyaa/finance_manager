@@ -1,1 +1,1 @@
-export { AddPage } from './model/Add';
+export { AddPage } from './ui/Add';

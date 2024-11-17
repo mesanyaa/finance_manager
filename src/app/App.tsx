@@ -6,10 +6,10 @@ const App: React.FC = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<MainPage />} />
                 <Route path="/categories" element={<CategoriesPage />} />
                 <Route path="/add" element={<AddPage />} />
                 <Route path="/auth" element={<AuthPage />} />
+                <Route path="/" element={<MainPage />} />
                 <Route path="/*" element={<Page404 />} />
             </Routes>
         </Router>

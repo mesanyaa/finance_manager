@@ -1,1 +1,1 @@
-export { Page404 } from './model/404';
+export { Page404 } from './ui/404';
