@@ -9,6 +9,7 @@ import styles from './styles.module.css';
 
 interface LayoutProps {
     children: ReactNode;
+    className?: string;
 }
 
 const Layout: FC<LayoutProps> = ({ children }) => {
