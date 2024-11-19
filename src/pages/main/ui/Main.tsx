@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Layout } from '../../layout';
 
 import { TransactionsList, PieChart, CustomTabs } from '../../../widgets';
+import { ADD_ROUTE } from '../../../consts';
 
 import { Button } from 'antd';
 import type { TabsProps } from 'antd';
@@ -48,7 +49,7 @@ const MainPage = () => {
                 className={styles.chartContainer}
             />
             <div className={styles.addButtonLinkContainer}>
-                <Link to="/add">
+                <Link to={ADD_ROUTE}>
                     <Button className={styles.addButton}>Добавить</Button>
                 </Link>
             </div>

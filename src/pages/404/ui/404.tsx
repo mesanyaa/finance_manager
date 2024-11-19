@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 
+import { MAIN_ROUTE } from '../../../consts';
+
 import styles from './styles.module.css';
 
 const Page404 = () => {
@@ -10,7 +12,7 @@ const Page404 = () => {
                 <div className={styles.errorText}>
                     Похоже страница с таким url не найдена
                 </div>
-                <Link to="/" className={styles.linkToHomePage}>
+                <Link to={MAIN_ROUTE} className={styles.linkToHomePage}>
                     нажмите, чтобы перейти на главную
                 </Link>
             </div>

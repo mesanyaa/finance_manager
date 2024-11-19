@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import userIcon from '../../../assets/user-icon.svg';
 import logo from '../../../assets/logo.svg';
+import { MAIN_ROUTE } from '../../../consts';
 
 import styles from './styles.module.css';
 
@@ -16,12 +17,12 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <Link to="/" className={styles.clickable}>
-                    <img src={logo} alt="" className={styles.icon} />
+                <Link to={MAIN_ROUTE} className={styles.clickable}>
+                    <img src={logo} alt="logotype" className={styles.icon} />
                 </Link>
                 <img
                     src={userIcon}
-                    alt=""
+                    alt="user"
                     className={classNames(styles.clickable, styles.icon)}
                 />
             </div>

@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import expense from '../../../assets/expense.svg';
 import income from '../../../assets/income.svg';
 
+import { TRANSACTION_TYPE_INCOME } from '../consts';
+
 import styles from './styles.module.css';
 
 interface TransactionsListItemProps {
@@ -23,10 +25,19 @@ const TransactionsListItem: FC<TransactionsListItemProps> = ({
         <div
             className={classNames(
                 styles.container,
-                transactionType === 'Доход' ? styles.income : styles.expense
+                transactionType === TRANSACTION_TYPE_INCOME
+                    ? styles.income
+                    : styles.expense
             )}
         >
-            <img src={transactionType === 'Доход' ? income : expense} alt="" />
+            <img
+                src={
+                    transactionType === TRANSACTION_TYPE_INCOME
+                        ? income
+                        : expense
+                }
+                alt="transactionType"
+            />
             <div>{transactionType}</div>
             <div>{category}</div>
             <div>{date}</div>
