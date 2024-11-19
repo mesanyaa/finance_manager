@@ -9,21 +9,19 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser, setUser } from '../../../app/slices/userSlice';
 import { RootState } from '../../../app/store';
-
 import { Link } from 'react-router-dom';
 import { MAIN_ROUTE } from '../../../consts';
 import { Button, Input } from 'antd';
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 
 import styles from './styles.module.css';
-
-// TODO: Вынести логику в папку model
 
 const AuthPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
-
     const user = useSelector((state: RootState) => state.user);
+    const db = getFirestore();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -45,6 +43,15 @@ const AuthPage = () => {
                 password
             );
             const user = userCredential.user;
+
+            console.log('Регистрация пользователя:', user.uid);
+
+            const userData = {
+                email: user.email,
+            };
+            await setDoc(doc(db, 'users', user.uid), userData);
+            console.log('Данные пользователя добавлены в Firestore');
+
             dispatch(setUser({ uid: user.uid, email: user.email }));
         } catch (error) {
             console.error('Ошибка при регистрации:', error);
@@ -59,6 +66,15 @@ const AuthPage = () => {
                 password
             );
             const user = userCredential.user;
+
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            if (!userDoc.exists()) {
+                const userData = {
+                    email: user.email,
+                };
+                await setDoc(doc(db, 'users', user.uid), userData);
+            }
+
             dispatch(setUser({ uid: user.uid, email: user.email }));
         } catch (error) {
             console.error('Ошибка при входе:', error);

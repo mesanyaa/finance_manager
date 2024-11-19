@@ -1,25 +1,23 @@
+import { FC } from 'react';
+
 import { TransactionsListItem } from '../../../shared/index';
 
 import styles from './styles.module.css';
 
 const mockTotal = 1000;
 
-const mockItems = [
-    {
-        transactionType: 'Расход',
-        category: 'Категория',
-        date: 'дд.мм.гг',
-        amount: 1000,
-    },
-    {
-        transactionType: 'Доход',
-        category: 'Категория',
-        date: 'дд.мм.гг',
-        amount: 1000,
-    },
-];
+interface Transaction {
+    categoryType: string;
+    category: string;
+    date: string;
+    amount: number;
+}
 
-const TransactionsList = () => {
+interface TransactionsListProps {
+    items: Transaction[];
+}
+
+const TransactionsList: FC<TransactionsListProps> = ({ items }) => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -28,12 +26,12 @@ const TransactionsList = () => {
                 <div>Итого: {mockTotal} ₽</div>
             </div>
             <div className={styles.list}>
-                {mockItems.map((item, index) => {
-                    const { transactionType, category, date, amount } = item;
+                {items.map((item, index) => {
+                    const { categoryType, category, date, amount } = item;
                     return (
                         <TransactionsListItem
                             key={index}
-                            transactionType={transactionType}
+                            transactionType={categoryType}
                             category={category}
                             date={date}
                             amount={amount}

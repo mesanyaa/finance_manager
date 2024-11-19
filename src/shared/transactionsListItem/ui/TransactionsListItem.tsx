@@ -41,7 +41,11 @@ const TransactionsListItem: FC<TransactionsListItemProps> = ({
             <div>{transactionType}</div>
             <div>{category}</div>
             <div>{date}</div>
-            <div>{amount}</div>
+            <div>
+                {transactionType === TRANSACTION_TYPE_INCOME
+                    ? amount
+                    : -1 * amount } ₽
+            </div>
             <div className={styles.openNotes}>...</div>
         </div>
     );
