@@ -1,0 +1,59 @@
+.container {
+    padding: 40px 0;
+}
+
+.header {
+    color: var(--blue);
+    font-size: 36px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.pickers {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.price {
+    display: flex;
+    width: 30%;
+    gap: 20px;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.addPriceInput {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--primary-black);
+}
+
+.addPriceInput:focus {
+    border: none;
+}
+
+.addPriceInputText {
+    font-size: 20px;
+}
+
+.notes {
+    margin-bottom: 30px;
+}
+
+.notesHeader {
+    font-size: 20px;
+    margin-bottom: 10px;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.addButton {
+    width: 100%;
+    background-color: var(--blue);
+    color: var(--primary-white);
+    font-size: 20px;
+    font-weight: 500;
+    padding: 20px;
+}
