@@ -71,5 +71,15 @@
 
 .scheduledPaymentField {
     width: fit-content;
+    text-align: center;
     margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+    .scheduledPayment,
+    .addButton,
+    .walletBalance,
+    .toScheduledPayment {
+        font-size: 12px;
+    }
 }

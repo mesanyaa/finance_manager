@@ -8,6 +8,8 @@
     font-weight: 500;
 }
 
-.trashBin {
-    cursor: pointer;
+@media (max-width: 600px) {
+    .categoryName {
+        font-size: 12px;
+    }
 }

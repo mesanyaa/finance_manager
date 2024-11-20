@@ -72,3 +72,18 @@
     margin: 0 auto;
     font-size: 20px;
 }
+
+@media (max-width: 600px) {
+    .header,
+    .noCategories,
+    .existingСategoriesList,
+    .existingСategoriesText,
+    .addCategoryButton,
+    .addCategoryText {
+        font-size: 12px;
+    }
+
+    .addCategory {
+        flex-direction: column;
+    }
+}

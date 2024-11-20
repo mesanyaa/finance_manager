@@ -17,3 +17,9 @@
 .openNotes {
     cursor: pointer;
 }
+
+@media (max-width: 600px) {
+    .container {
+        font-size: 12px;
+    }
+}

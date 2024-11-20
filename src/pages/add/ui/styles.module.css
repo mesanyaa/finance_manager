@@ -1,5 +1,5 @@
 .container {
-    padding: 40px 0;
+    padding: 40px 10px;
 }
 
 .header {
@@ -7,6 +7,8 @@
     font-size: 36px;
     font-weight: 500;
     margin-bottom: 30px;
+    width: fit-content;
+    text-align: center;
 }
 
 .pickers {
@@ -71,4 +73,13 @@
     font-size: 20px;
     font-weight: 500;
     padding: 20px;
+}
+
+@media (max-width: 600px) {
+    .pickers {
+        flex-direction: column;
+    }
+    .price {
+        width: 100%;
+    }
 }
