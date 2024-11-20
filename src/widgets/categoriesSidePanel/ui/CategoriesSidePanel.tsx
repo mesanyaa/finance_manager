@@ -9,7 +9,7 @@ import {
 } from '../../../app/slices/categorySlice';
 import { CategoriesItem } from '../../../shared/index';
 import styles from './styles.module.css';
-import { AppDispatch } from '../../../app/store';
+import { AppDispatch, RootState } from '../../../app/store';
 
 import { notification } from 'antd';
 
@@ -20,11 +20,13 @@ interface CategoriesSidePanelProps {
 const CategoriesSidePanel: FC<CategoriesSidePanelProps> = ({
     categoryType,
 }) => {
+    const user = useSelector((state: RootState) => state.user);
+    const userId = user.uid as string;
     const dispatch: AppDispatch = useDispatch();
     const categories = useSelector(selectCategories);
 
     useEffect(() => {
-        dispatch(fetchCategories());
+        dispatch(fetchCategories(userId));
     }, [dispatch]);
 
     const filteredCategories = categories.filter(
@@ -46,7 +48,7 @@ const CategoriesSidePanel: FC<CategoriesSidePanelProps> = ({
                 category: newCategoryName,
                 categoryType: categoryType,
             };
-            dispatch(createCategory(newCategory))
+            dispatch(createCategory({ userId, category: newCategory }))
                 .unwrap()
                 .then(() => {
                     openNotification('success', 'Категория успешно добавлена!');

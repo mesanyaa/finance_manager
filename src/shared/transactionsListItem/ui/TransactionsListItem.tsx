@@ -6,6 +6,8 @@ import income from '../../../assets/income.svg';
 
 import { TRANSACTION_TYPE_INCOME } from '../consts';
 
+import { notification } from 'antd';
+
 import styles from './styles.module.css';
 
 interface TransactionsListItemProps {
@@ -13,6 +15,7 @@ interface TransactionsListItemProps {
     category: string;
     date: string;
     amount: number;
+    notes?: string;
 }
 
 const TransactionsListItem: FC<TransactionsListItemProps> = ({
@@ -20,7 +23,26 @@ const TransactionsListItem: FC<TransactionsListItemProps> = ({
     category,
     date,
     amount,
+    notes,
 }) => {
+    const openNotification = (type: 'success' | 'error', message: string) => {
+        notification[type]({
+            message: message,
+            placement: 'topRight',
+        });
+    };
+
+    const openNotes = () => {
+        if (notes) {
+            openNotification('success', notes);
+        } else {
+            openNotification(
+                'error',
+                'У данной транзакции нет заметок'
+            );
+        }
+    };
+
     return (
         <div
             className={classNames(
@@ -44,9 +66,12 @@ const TransactionsListItem: FC<TransactionsListItemProps> = ({
             <div>
                 {transactionType === TRANSACTION_TYPE_INCOME
                     ? amount
-                    : -1 * amount } ₽
+                    : -1 * amount}{' '}
+                ₽
             </div>
-            <div className={styles.openNotes}>...</div>
+            <div className={styles.openNotes} onClick={openNotes}>
+                ...
+            </div>
         </div>
     );
 };

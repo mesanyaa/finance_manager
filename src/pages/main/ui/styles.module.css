@@ -1,3 +1,7 @@
+.layout {
+    margin-bottom: 50px;
+}
+
 .balanceInfo {
     display: flex;
     justify-content: space-between;
@@ -45,5 +49,27 @@
     background-color: var(--cyan);
     font-size: 20px;
     font-weight: 500;
+    margin: 0 auto;
+}
+
+.scheduledPaymentContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.scheduledPayment {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background-color: var(--cyan);
+    color: var(--primary-white);
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+.scheduledPaymentField {
+    width: fit-content;
     margin: 0 auto;
 }

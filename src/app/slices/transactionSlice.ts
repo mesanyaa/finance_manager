@@ -56,10 +56,16 @@ const transactionSlice = createSlice({
     reducers: {
         calculateBalance(state) {
             state.balance = state.transactions.reduce((total, transaction) => {
-                return total + transaction.amount;
+                if (transaction.categoryType === 'Доход') {
+                    return total + transaction.amount;
+                } else if (transaction.categoryType === 'Расход') {
+                    return total - transaction.amount;
+                }
+                return total;
             }, 0);
         },
     },
+
     extraReducers: (builder) => {
         builder
             .addCase(fetchTransactions.pending, (state) => {
@@ -72,7 +78,12 @@ const transactionSlice = createSlice({
                     state.transactions = action.payload;
                     state.balance = action.payload.reduce(
                         (total, transaction) => {
-                            return total + transaction.amount;
+                            if (transaction.categoryType === 'Доход') {
+                                return total + transaction.amount;
+                            } else if (transaction.categoryType === 'Расход') {
+                                return total - transaction.amount;
+                            }
+                            return total;
                         },
                         0
                     );
