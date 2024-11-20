@@ -1,10 +1,10 @@
 import { FC, ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 
 import userIcon from '../../../assets/user-icon.svg';
 import logo from '../../../assets/logo.svg';
-import { MAIN_ROUTE } from '../../../consts';
+import { AUTH_ROUTE, MAIN_ROUTE } from '../../../consts';
 
 import styles from './styles.module.css';
 
@@ -14,6 +14,12 @@ interface LayoutProps {
 }
 
 const Layout: FC<LayoutProps> = ({ children }) => {
+    const navigate = useNavigate();
+
+    const redirectToAuthPage = () => {
+        navigate(AUTH_ROUTE)
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -24,6 +30,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
                     src={userIcon}
                     alt="user"
                     className={classNames(styles.clickable, styles.icon)}
+                    onClick={redirectToAuthPage}
                 />
             </div>
             {children}

@@ -67,3 +67,8 @@
     flex-direction: column;
     gap: 20px;
 }
+
+.noCategories {
+    margin: 0 auto;
+    font-size: 20px;
+}

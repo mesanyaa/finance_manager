@@ -2,9 +2,10 @@ import { FC } from 'react';
 
 import { TransactionsListItem } from '../../../shared/index';
 
-import styles from './styles.module.css';
+import { selectBalance } from '../../../app/slices/transactionSlice';
 
-const mockTotal = 1000;
+import styles from './styles.module.css';
+import { useSelector } from 'react-redux';
 
 interface Transaction {
     categoryType: string;
@@ -18,12 +19,14 @@ interface TransactionsListProps {
 }
 
 const TransactionsList: FC<TransactionsListProps> = ({ items }) => {
+    const balance = useSelector(selectBalance);
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <div>Список транзакций </div>
                 <div>Все</div>
-                <div>Итого: {mockTotal} ₽</div>
+                <div>Итого: {balance} ₽</div>
             </div>
             <div className={styles.list}>
                 {items.map((item, index) => {

@@ -10,7 +10,7 @@ import {
 import { RootState } from '../store';
 
 interface Category {
-    id: string;
+    id?: string;
     categoryType: string;
     category: string;
 }
@@ -36,11 +36,12 @@ export const fetchCategories = createAsyncThunk<Category[]>(
     }
 );
 
-export const createCategory = createAsyncThunk<void, Category>(
+export const createCategory = createAsyncThunk<Category, Category>(
     'categories/createCategory',
     async (category) => {
         const categoriesCollection = collection(db, 'categories');
-        await addDoc(categoriesCollection, category);
+        const docRef = await addDoc(categoriesCollection, category);
+        return { id: docRef.id, ...category };
     }
 );
 
@@ -71,9 +72,13 @@ const categorySlice = createSlice({
             .addCase(fetchCategories.rejected, (state) => {
                 state.status = 'failed';
             })
-            .addCase(createCategory.fulfilled, (state) => {
-                state.status = 'idle';
-            })
+            .addCase(
+                createCategory.fulfilled,
+                (state, action: PayloadAction<Category>) => {
+                    state.status = 'idle';
+                    state.categories.push(action.payload);
+                }
+            )
             .addCase(deleteCategory.fulfilled, (state, action) => {
                 state.categories = state.categories.filter(
                     (category) => category.id !== action.meta.arg
@@ -84,4 +89,5 @@ const categorySlice = createSlice({
 
 export const selectCategories = (state: RootState) =>
     state.categories.categories;
+
 export default categorySlice.reducer;

@@ -16,6 +16,21 @@
     margin-bottom: 30px;
 }
 
+.selectCategory {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.addCategory {
+    color: var(--blue);
+}
+
+.dataPicker {
+    height: 40px;
+}
+
 .price {
     display: flex;
     width: 30%;

@@ -8,11 +8,17 @@ interface CategoriesItemProps {
     categoryName: string;
 }
 
-const CategoriesItem: FC<CategoriesItemProps> = ({ categoryName }) => {
+const CategoriesItem: FC<CategoriesItemProps> = ({
+    categoryName,
+}) => {
     return (
         <div className={styles.container}>
             <div className={styles.categoryName}>{categoryName}</div>
-            <img src={trashBin} alt="trashBin" className={styles.trashBin} />
+            <img
+                src={trashBin}
+                alt="trashBin"
+                className={styles.trashBin}
+            />
         </div>
     );
 };

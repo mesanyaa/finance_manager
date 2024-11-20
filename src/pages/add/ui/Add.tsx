@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
 
 import { Layout } from '../../layout';
@@ -18,7 +18,8 @@ import {
 } from '../../../app/slices/categorySlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../../app/store';
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useMemo, useState } from 'react';
+import { CATEGORIES_ROUTE } from '../../../consts';
 
 // TODO: вынести priceInput в shared (заметки скорее всего тоже в shared или widgets)
 
@@ -74,6 +75,17 @@ const AddPage = () => {
         dispatch(fetchCategories());
     }, [dispatch]);
 
+    const filteredCategories = useMemo(() => {
+        return categories.filter((category) => {
+            if (transactionType === 'Доход') {
+                return category.categoryType === 'Доходы';
+            } else if (transactionType === 'Расход') {
+                return category.categoryType === 'Расходы';
+            }
+            return false;
+        });
+    }, [categories, transactionType]);
+
     const handleAddTransaction = () => {
         if (!transactionType || !amount || !date) {
             notification.error({
@@ -85,7 +97,7 @@ const AddPage = () => {
 
         const newTransaction: Transaction = {
             categoryType: transactionType,
-            category: 'Категория',
+            category: category,
             amount: Number(amount),
             date: formatDate(date),
         };
@@ -112,14 +124,23 @@ const AddPage = () => {
                         options={transactionTypeOptions}
                         onChange={handleTransactionTypeChange}
                     />
-                    <CustomSelect
-                        placeholder="Категория"
-                        options={categories}
-                        onChange={handleCategoryChange}
-                    />
+                    <div className={styles.selectCategory}>
+                        <CustomSelect
+                            placeholder="Категория"
+                            options={filteredCategories}
+                            onChange={handleCategoryChange}
+                        />
+                        <Link
+                            to={CATEGORIES_ROUTE}
+                            className={styles.addCategory}
+                        >
+                            Добавить категорию
+                        </Link>
+                    </div>
                     <DatePicker
                         placeholder="Дата"
                         onChange={handleDateChange}
+                        className={styles.dataPicker}
                     />
                 </div>
                 <div className={styles.price}>

@@ -9,30 +9,25 @@ import { Button } from 'antd';
 import type { TabsProps } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTransactions } from '../../../app/slices/transactionSlice';
+import {
+    fetchTransactions,
+    selectBalance,
+} from '../../../app/slices/transactionSlice';
 
 import styles from './styles.module.css';
 import { useEffect } from 'react';
 import { RootState, AppDispatch } from '../../../app/store';
 
-const mockBalance = 1000;
-
-const mockOnChange = (key: string) => {
-    console.log(key);
-};
-
-const chart = <PieChart className={styles.chart} />;
-
 const mockItems: TabsProps['items'] = [
     {
         key: '1',
         label: 'Доходы',
-        children: chart,
+        children: <PieChart className={styles.chart} categoryType="Доходы" />,
     },
     {
         key: '2',
         label: 'Расходы',
-        children: chart,
+        children: <PieChart className={styles.chart} categoryType="Расходы" />,
     },
 ];
 
@@ -53,6 +48,8 @@ const MainPage = () => {
         }
     }, [transactionStatus, dispatch, userId]);
 
+    const balance = useSelector(selectBalance);
+
     return (
         <Layout>
             <div className={styles.scheduledPayment}></div>
@@ -61,15 +58,11 @@ const MainPage = () => {
                     Запланировать платёж
                 </div>
                 <div className={styles.walletBalance}>
-                    Баланс кошелька: <span>{mockBalance} ₽</span>
+                    Баланс кошелька: <span>{balance} ₽</span>
                 </div>
             </div>
 
-            <CustomTabs
-                items={mockItems}
-                onChange={mockOnChange}
-                className={styles.chartContainer}
-            />
+            <CustomTabs items={mockItems} className={styles.chartContainer} />
 
             <div className={styles.addButtonLinkContainer}>
                 <Link to={ADD_ROUTE}>
