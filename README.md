@@ -1,50 +1,57 @@
-# React + TypeScript + Vite
+# Приложение финансовый менеджер
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Функционал:
 
-Currently, two official plugins are available:
+-   Вход: Система должна позволять пользователю входить в систему, используя свое имя пользователя и пароль
+-   Регистрация: Система должна позволять пользователю зарегистрироваться
+-   Разделение доходов по категориям: Система должна позволять пользователю выбрать источник дохода из существующих категорий
+-   Разделение расходов по категориям: Система должна позволять пользователю выбрать категорию расхода
+-   Возможность добавить свою категорию: Система должна позволять пользователю добавить свою категорию расхода
+-   Список транзакций: Система должна позволять пользователю видеть все совершённые им денежные операции в виде списка
+-   Добавление транзакции: Система должна позволять пользователю добавить транзакцию по шаблону:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Доход/расход
+2. Категория
+3. Сумма
+4. Дата и время
+5. Заметки
 
-## Expanding the ESLint configuration
+-   Отображение расходов в виде графика: Система должна отображать расходы пользователя, разделённые по категориям, в виде графика
+-   Напоминание о регулярных платежах: Система должна подсвечивать напоминание о регулярных платежах
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Стек технологий
 
-- Configure the top-level `parserOptions` property like this:
+-   Фреймворк: React
+-   Дополнительные библиотеки: AntDesign, Chart.js
+-   State managment: Redux tool-kit
+-   Язык программирования: TypeScript
+-   Бекенд: Firebase (Firestore для базы данных, Firebase Authentication)
+-   Протоколы обмена данными: REST API (через Firebase Functions)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Архитектура
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- Клиент-серверная архитектура
+- SPA
+- Component-based architecture
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Структура проекта
+- app самый верхний, инициализирующий слой
+- pages все страницы, которые отрисовываются в процессе пользования приложением
+- widgets небольшие компоненты на странице, из которых строятся виджет
+- shared небольшие компоненты на странице, из которых строятся виджет
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- utils логика, необходимая для работы приложения в целом, код из этой папки доступен в любой части приложения
+
+Каждый компонент состоит из model - логика и ui - представление
+
+Здесь такая идея, что что компонент имеет доступ на все слои ниже, при этом на одном слое компоненты не связаны между собой. За основу взята идея FSD архитектуры, это её упрощённая версия
+
+## Страницы сайта
+- / - Главная страница
+- /add - Страница добавления транзакции
+- /categories - Страница добавления категории
+- /auth - Страница авторизации
+- /* - Если неверно введён URL
+
+## Связи с внешними сервисами
+Моковый бекенд: Firebase
