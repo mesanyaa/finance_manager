@@ -73,7 +73,7 @@ const AddPage = () => {
 
     useEffect(() => {
         dispatch(fetchCategories(userId));
-    }, [dispatch]);
+    }, [dispatch, userId]);
 
     const filteredCategories = useMemo(() => {
         return categories.filter((category) => {

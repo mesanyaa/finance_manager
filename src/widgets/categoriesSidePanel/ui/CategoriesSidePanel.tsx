@@ -27,7 +27,7 @@ const CategoriesSidePanel: FC<CategoriesSidePanelProps> = ({
 
     useEffect(() => {
         dispatch(fetchCategories(userId));
-    }, [dispatch]);
+    }, [dispatch, userId]);
 
     const filteredCategories = categories.filter(
         (category) => category.categoryType === categoryType

@@ -5,7 +5,7 @@ import { Select } from 'antd';
 import styles from './styles.module.css';
 
 interface Category {
-    id: string;
+    id?: string;
     categoryType: string;
     category: string;
 }
