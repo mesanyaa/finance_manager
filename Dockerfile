@@ -17,11 +17,17 @@ COPY server/ .
 FROM node:18-alpine
 WORKDIR /app
 
+# Install docker-compose
+RUN apk add --no-cache docker-compose
+
 # Copy built client
 COPY --from=client-builder /app/client/dist ./client/dist
 
 # Copy server
 COPY --from=server-builder /app/server ./server
+
+# Copy docker-compose.yml
+COPY docker-compose.yml .
 
 # Install production dependencies
 WORKDIR /app/server
@@ -35,4 +41,4 @@ ENV PORT=5000
 EXPOSE 5000
 
 # Start the server
-CMD ["node", "src/index.js"] 
+CMD ["docker-compose", "up"] 
