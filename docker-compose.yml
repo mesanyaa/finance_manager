@@ -1,23 +1,17 @@
 version: '3.8'
 
 services:
-  client:
-    build: ./client
+  app:
+    build: .
     ports:
-      - "5173:5173"
-    depends_on:
-      - server
-    networks:
-      - finance_manager_network
-
-  server:
-    build: ./server
-    ports:
-      - "3000:3000"
+      - "5000:5000"
     depends_on:
       - mongodb
     environment:
       - MONGODB_URI=mongodb://finance_admin:finance_secure_password_123@mongodb:27017/finance_manager?authSource=admin
+      - NODE_ENV=production
+      - JWT_SECRET=fm_8x#K9$mP2@vL5&nQ7*wR4!jH3^tY6
+      - JWT_EXPIRES_IN=24h
     networks:
       - finance_manager_network
 
