@@ -17,7 +17,7 @@ services:
     depends_on:
       - mongodb
     environment:
-      - MONGODB_URI=mongodb://admin:password@mongodb:27017
+      - MONGODB_URI=mongodb://finance_admin:finance_secure_password_123@mongodb:27017/finance_manager?authSource=admin
     networks:
       - finance_manager_network
 
