@@ -11,7 +11,7 @@ export const protect = async (req, res, next) => {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'finance_manager_jwt_secret_key_2024');
     
     // Get user from token
     const user = await User.findById(decoded.userId).select('-password');

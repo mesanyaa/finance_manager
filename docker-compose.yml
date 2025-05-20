@@ -1,6 +1,26 @@
 version: '3.8'
 
 services:
+  client:
+    build: ./client
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+    networks:
+      - finance_manager_network
+
+  server:
+    build: ./server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017
+    networks:
+      - finance_manager_network
+
   mongodb:
     image: mongo:latest
     container_name: finance_manager_mongodb
@@ -9,8 +29,8 @@ services:
     volumes:
       - mongodb_data:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_ROOT_USERNAME=finance_admin
+      - MONGO_INITDB_ROOT_PASSWORD=finance_secure_password_123
     networks:
       - finance_manager_network
 
@@ -19,4 +39,4 @@ volumes:
 
 networks:
   finance_manager_network:
-    driver: bridge 
+    driver: bridge
