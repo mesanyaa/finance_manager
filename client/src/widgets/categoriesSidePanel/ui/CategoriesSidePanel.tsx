@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Input, Select, List, message } from 'antd';
+import { Button, Input, List, message } from 'antd';
 import { addCategory, fetchCategories, deleteCategory } from '../model/categoriesSlice';
 import { RootState, AppDispatch } from '../../../app/store';
 import { Category } from '../model/categoriesSlice';
 import styles from './styles.module.css';
-
-const { Option } = Select;
 
 interface CategoriesSidePanelProps {
     categoryType: 'expense' | 'income';

@@ -38,7 +38,7 @@ const mockItems: TabsProps['items'] = [
 
 const MainPage = () => {
     const user = useSelector((state: RootState) => state.user);
-    const userId = user.uid as string;
+    const userId = user.id;
 
     const dispatch: AppDispatch = useDispatch();
 
@@ -50,14 +50,16 @@ const MainPage = () => {
     });
 
     useEffect(() => {
-        dispatch(fetchScheduledPayments(userId));
+        if (userId) {
+            dispatch(fetchScheduledPayments());
+        }
     }, [dispatch, userId]);
 
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const handleAddPayment = () => {
         if (newPayment.date && newPayment.category && newPayment.amount > 0) {
-            dispatch(createScheduledPayment({ userId, payment: newPayment }));
+            dispatch(createScheduledPayment(newPayment));
             setNewPayment({ date: '', category: '', amount: 0 });
             setIsModalVisible(false);
         }
@@ -79,8 +81,8 @@ const MainPage = () => {
     );
 
     useEffect(() => {
-        if (transactionStatus === 'idle') {
-            dispatch(fetchTransactions(userId as string));
+        if (transactionStatus === 'idle' && userId) {
+            dispatch(fetchTransactions());
         }
     }, [transactionStatus, dispatch, userId]);
 
@@ -89,28 +91,26 @@ const MainPage = () => {
     return (
         <Layout>
             <div className={styles.scheduledPaymentContainer}>
-                {scheduledPayments.length > 1
-                    ? scheduledPayments.map((payment, key) => {
-                          return (
-                              <div
-                                  key={key}
-                                  className={styles.scheduledPayment}
-                              >
-                                  <div className={styles.scheduledPaymentField}>
-                                      Напоминание о регулярном платеже
-                                  </div>
-                                  <div className={styles.scheduledPaymentField}>
-                                      Вам необходимо совершить транзакцию в
-                                      категории {payment.category} на сумму{' '}
-                                      {payment.amount} ₽
-                                  </div>
-                                  <div className={styles.scheduledPaymentField}>
-                                      Дата: {payment.date}
-                                  </div>
+                {scheduledPayments.length > 0
+                    ? scheduledPayments.map((payment, key) => (
+                          <div
+                              key={key}
+                              className={styles.scheduledPayment}
+                          >
+                              <div className={styles.scheduledPaymentField}>
+                                  Напоминание о регулярном платеже
                               </div>
-                          );
-                      })
-                    : ''}
+                              <div className={styles.scheduledPaymentField}>
+                                  Вам необходимо совершить транзакцию в
+                                  категории {payment.category} на сумму{' '}
+                                  {payment.amount} ₽
+                              </div>
+                              <div className={styles.scheduledPaymentField}>
+                                  Дата: {payment.date}
+                              </div>
+                          </div>
+                      ))
+                    : null}
             </div>
             <div className={styles.balanceInfo}>
                 <div
@@ -139,10 +139,9 @@ const MainPage = () => {
 
             <TransactionsList items={transactions} />
 
-            {/* Модальное окно для добавления платежа */}
             <Modal
                 title="Добавить запланированный платёж"
-                visible={isModalVisible}
+                open={isModalVisible}
                 onCancel={handleCloseModal}
                 footer={null}
             >

@@ -21,10 +21,6 @@ import { Category } from '../../../widgets/categoriesSidePanel/model/categoriesS
 
 // TODO: вынести priceInput in shared (заметки скорее всего тоже в shared или widgets)
 
-const formatDate = (date: string | number | Date) => {
-    return new Date(date).toLocaleDateString('ru-RU');
-};
-
 interface Transaction {
     categoryType: string;
     category: string;
