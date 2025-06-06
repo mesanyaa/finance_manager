@@ -1,14 +1,14 @@
 FROM node:18-alpine as client-builder
 WORKDIR /app/client
 COPY client/package*.json ./
-RUN npm install
+RUN npm config set registry https://registry.npmjs.org/ && npm install
 COPY client/ .
 RUN npm run build
 
 FROM node:18-alpine as server-builder
 WORKDIR /app/server
 COPY server/package*.json ./
-RUN npm install
+RUN npm config set registry https://registry.npmjs.org/ && npm install
 COPY server/ .
 
 FROM node:18-alpine
@@ -19,7 +19,7 @@ COPY --from=client-builder /app/client/dist ./client/dist
 COPY --from=server-builder /app/server ./server
 
 WORKDIR /app/server
-RUN npm install --production
+RUN npm config set registry https://registry.npmjs.org/ && npm install --production
 
 ENV NODE_ENV=production
 ENV PORT=5000
