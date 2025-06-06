@@ -28,9 +28,9 @@ RUN npm cache clean --force && \
     npm install --production
 
 ENV NODE_ENV=production
-ENV PORT=5000
+ENV PORT=5001
 ENV NPM_CONFIG_REGISTRY=https://registry.npmjs.org/
 
-EXPOSE 5000
+EXPOSE 5001
 
 CMD ["node", "src/index.js"] 
