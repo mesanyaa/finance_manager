@@ -65,7 +65,16 @@ const MainPage = () => {
             if (userId) {
                 dispatch(fetchScheduledPayments());
             }
-        }, 300),
+        }, 1000),
+        [dispatch, userId]
+    );
+
+    const debouncedFetchTransactions = useCallback(
+        debounce(() => {
+            if (userId) {
+                dispatch(fetchTransactions());
+            }
+        }, 1000),
         [dispatch, userId]
     );
 
@@ -78,9 +87,12 @@ const MainPage = () => {
 
     useEffect(() => {
         if (transactionStatus === 'idle' && userId) {
-            dispatch(fetchTransactions());
+            debouncedFetchTransactions();
         }
-    }, [transactionStatus, dispatch, userId]);
+        return () => {
+            debouncedFetchTransactions.cancel();
+        };
+    }, [transactionStatus, dispatch, userId, debouncedFetchTransactions]);
 
     const handleAddPayment = useCallback(async () => {
         if (newPayment.date && newPayment.category && newPayment.amount > 0) {
@@ -89,13 +101,15 @@ const MainPage = () => {
                 await dispatch(createScheduledPayment(newPayment)).unwrap();
                 setNewPayment({ date: '', category: '', amount: 0 });
                 setIsModalVisible(false);
+                // После создания нового платежа обновляем список
+                debouncedFetchScheduledPayments();
             } catch (error) {
                 console.error('Failed to create scheduled payment:', error);
             } finally {
                 setIsLoading(false);
             }
         }
-    }, [dispatch, newPayment]);
+    }, [dispatch, newPayment, debouncedFetchScheduledPayments]);
 
     const handleOpenModal = useCallback(() => {
         setIsModalVisible(true);
@@ -203,7 +217,7 @@ const MainPage = () => {
                             />
                         </Form.Item>
                         <Form.Item>
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" loading={isLoading}>
                                 Добавить
                             </Button>
                         </Form.Item>
