@@ -23,7 +23,7 @@ import {
     selectScheduledPayments,
     selectScheduledPaymentsStatus,
 } from '../../../app/slices/scheduledPaymentsSlice';
-import debounce from 'lodash/debounce';
+import { debounce } from '../../../utils/debounce';
 
 const formatDate = (dateString: string) => {
     const date = new Date(dateString);
