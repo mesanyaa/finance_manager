@@ -15,7 +15,7 @@ import {
 } from '../../../app/slices/transactionSlice';
 
 import styles from './styles.module.css';
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, memo } from 'react';
 import { RootState, AppDispatch } from '../../../app/store';
 import {
     createScheduledPayment,
@@ -32,6 +32,78 @@ const formatDate = (dateString: string) => {
     const year = date.getFullYear().toString().slice(-2);
     return `${day}.${month}.${year}`;
 };
+
+// Мемоизированный компонент для отображения запланированных платежей
+const ScheduledPaymentsList = memo(({ payments, status }: { payments: any[], status: string }) => {
+    if (status === 'loading') {
+        return <Spin size="large" />;
+    }
+
+    if (payments.length === 0) {
+        return null;
+    }
+
+    return (
+        <>
+            {payments.map((payment, key) => (
+                <div key={key} className={styles.scheduledPayment}>
+                    <div className={styles.scheduledPaymentField}>
+                        Напоминание о регулярном платеже
+                    </div>
+                    <div className={styles.scheduledPaymentField}>
+                        Вам необходимо совершить транзакцию в категории{' '}
+                        {payment.category} на сумму {payment.amount} ₽
+                    </div>
+                    <div className={styles.scheduledPaymentField}>
+                        Дата: {formatDate(payment.date)}
+                    </div>
+                </div>
+            ))}
+        </>
+    );
+});
+
+// Мемоизированный компонент формы
+const PaymentForm = memo(({ 
+    newPayment, 
+    handlePaymentChange, 
+    handleAddPayment, 
+    isLoading 
+}: { 
+    newPayment: any, 
+    handlePaymentChange: (field: string, value: string | number) => void,
+    handleAddPayment: () => void,
+    isLoading: boolean
+}) => (
+    <Spin spinning={isLoading}>
+        <Form layout="vertical" onFinish={handleAddPayment}>
+            <Form.Item label="Дата" required>
+                <Input
+                    value={newPayment.date}
+                    onChange={(e) => handlePaymentChange('date', e.target.value)}
+                />
+            </Form.Item>
+            <Form.Item label="Категория" required>
+                <Input
+                    value={newPayment.category}
+                    onChange={(e) => handlePaymentChange('category', e.target.value)}
+                />
+            </Form.Item>
+            <Form.Item label="Сумма" required>
+                <Input
+                    type="number"
+                    value={newPayment.amount}
+                    onChange={(e) => handlePaymentChange('amount', Number(e.target.value))}
+                />
+            </Form.Item>
+            <Form.Item>
+                <Button type="primary" htmlType="submit" loading={isLoading}>
+                    Добавить
+                </Button>
+            </Form.Item>
+        </Form>
+    </Spin>
+));
 
 const MainPage = () => {
     const user = useSelector((state: RootState) => state.user);
@@ -142,25 +214,10 @@ const MainPage = () => {
     return (
         <Layout>
             <div className={styles.scheduledPaymentContainer}>
-                {scheduledPaymentsStatus === 'loading' ? (
-                    <Spin size="large" />
-                ) : (
-                    scheduledPayments.length > 0 &&
-                    scheduledPayments.map((payment, key) => (
-                        <div key={key} className={styles.scheduledPayment}>
-                            <div className={styles.scheduledPaymentField}>
-                                Напоминание о регулярном платеже
-                            </div>
-                            <div className={styles.scheduledPaymentField}>
-                                Вам необходимо совершить транзакцию в категории{' '}
-                                {payment.category} на сумму {payment.amount} ₽
-                            </div>
-                            <div className={styles.scheduledPaymentField}>
-                                Дата: {formatDate(payment.date)}
-                            </div>
-                        </div>
-                    ))
-                )}
+                <ScheduledPaymentsList 
+                    payments={scheduledPayments} 
+                    status={scheduledPaymentsStatus} 
+                />
             </div>
             <div className={styles.balanceInfo}>
                 <div
@@ -195,34 +252,12 @@ const MainPage = () => {
                 onCancel={handleCloseModal}
                 footer={null}
             >
-                <Spin spinning={isLoading}>
-                    <Form layout="vertical" onFinish={handleAddPayment}>
-                        <Form.Item label="Дата" required>
-                            <Input
-                                value={newPayment.date}
-                                onChange={(e) => handlePaymentChange('date', e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Категория" required>
-                            <Input
-                                value={newPayment.category}
-                                onChange={(e) => handlePaymentChange('category', e.target.value)}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Сумма" required>
-                            <Input
-                                type="number"
-                                value={newPayment.amount}
-                                onChange={(e) => handlePaymentChange('amount', Number(e.target.value))}
-                            />
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit" loading={isLoading}>
-                                Добавить
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </Spin>
+                <PaymentForm
+                    newPayment={newPayment}
+                    handlePaymentChange={handlePaymentChange}
+                    handleAddPayment={handleAddPayment}
+                    isLoading={isLoading}
+                />
             </Modal>
         </Layout>
     );
